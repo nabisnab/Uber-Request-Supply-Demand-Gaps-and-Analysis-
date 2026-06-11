@@ -103,40 +103,6 @@ Active Drivers      →   300
 
 ---
 
-## 📁 Project Structure
-
-```
-uber-eda/
-│
-├── 📂 data/
-│   ├── Uber_Request_Data.csv            # Raw dataset
-│   └── Uber_Request_Data_Cleaned.csv    # Cleaned & engineered dataset
-│
-├── 📂 notebooks/
-│   └── prepeda.ipynb                    # Full EDA notebook
-│
-├── 📂 scripts/
-│   ├── uber_data_cleaning.py            # Step 1 — Data cleaning
-│   ├── uber_eda_charts.py               # Step 2 — Histograms & boxplots
-│   ├── uber_full_analysis.py            # Step 3 — Scatter, correlation, treatments
-│   └── uber_duplicate_garbage_normalization.py  # Step 4 — Final treatments
-│
-├── 📂 outputs/
-│   ├── uber_eda_charts.png              # Distribution charts
-│   ├── uber_full_analysis.png           # Full analysis charts
-│   ├── uber_duplicate_garbage_normalization.png
-│   ├── uber_supply_gap_table.csv        # Supply gap pivot
-│   ├── uber_daily_scorecard.csv         # Daily performance scorecard
-│   └── Uber_Business_Insights_Report.pdf  # Final PDF report
-│
-├── 📂 dashboard/
-│   └── uber_dashboard.xlsx              # Google Sheets dashboard
-│
-├── 📂 sql/
-│   └── uber_query.sql                   # SQL analysis queries
-│
-└── README.md
-```
 
 ---
 
@@ -201,17 +167,6 @@ df['time_slot'] = pd.cut(df['hour'], bins=bins, labels=labels, right=False)
 
 ---
 
-### Step 5 — Normalisation
-
-```python
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-
-# Min-Max (0–1) → for KNN, Neural Networks
-mm_scaled = MinMaxScaler().fit_transform(df[['hour', 'duration_min']])
-
-# Z-score → for Linear Regression, PCA
-std_scaled = StandardScaler().fit_transform(df[['hour', 'duration_min']])
-```
 
 ---
 
@@ -251,36 +206,7 @@ Built in **Google Sheets** with 10 charts across a structured 4-row layout:
 
 ---
 
-## 🗄️ SQL Analysis
 
-```sql
--- Status distribution
-SELECT Status, COUNT(*) AS total
-FROM uber_requests
-GROUP BY Status;
-
--- Hourly demand
-SELECT hour, COUNT(*) AS requests
-FROM uber_requests
-GROUP BY hour
-ORDER BY hour;
-
--- Average trip duration (completed only)
-SELECT AVG(duration_min) AS avg_duration
-FROM uber_requests
-WHERE Status = 'Trip Completed';
-
--- Supply gap by time slot
-SELECT time_slot,
-       COUNT(*) AS total_requests,
-       SUM(CASE WHEN Status = 'Trip Completed' THEN 1 ELSE 0 END) AS completed,
-       SUM(CASE WHEN Status != 'Trip Completed' THEN 1 ELSE 0 END) AS unserved,
-       ROUND(SUM(CASE WHEN Status != 'Trip Completed' THEN 1 ELSE 0 END) * 100.0
-             / COUNT(*), 1) AS unserved_pct
-FROM uber_requests
-GROUP BY time_slot
-ORDER BY unserved_pct DESC;
-```
 
 ---
 
@@ -349,8 +275,8 @@ Use predictive nudges to pre-position drivers near the Airport before 17:00 and 
 ## 👤 Author
 
 **Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [yourlinkedin](https://linkedin.com/in/yourlinkedin)
+- GitHub: [@nabisnab](https://github.com/nabisnab)
+
 
 ---
 
